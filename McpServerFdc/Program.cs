@@ -19,8 +19,4 @@ builder.Services
 
 var app = builder.Build();
 
-// var fdcService = app.Services.GetRequiredService<FdcService>();
-//
-// var deliveries = await fdcService.GetTankDelivery(null);
-
 await app.RunAsync();
