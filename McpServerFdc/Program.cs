@@ -9,6 +9,7 @@ builder.Logging.AddConsole(consoleLogOptions =>
     consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
 });
 
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<FdcService>();
 
 builder.Services
@@ -16,4 +17,10 @@ builder.Services
     .WithStdioServerTransport()
     .WithToolsFromAssembly();
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+// var fdcService = app.Services.GetRequiredService<FdcService>();
+//
+// var deliveries = await fdcService.GetTankDelivery(null);
+
+await app.RunAsync();
