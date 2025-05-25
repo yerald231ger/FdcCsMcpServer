@@ -61,3 +61,32 @@ The MCP server will start and listen for incoming connections using standard inp
 ## How It Works
 
 The application sets up an MCP server with:
+
+- **Logging**: Configured to send trace-level logs to standard error for diagnostic purposes
+- **HTTP Client Factory**: Registered for making API calls to the FDC backend
+- **Service Registration**: The `FdcService` is registered as a singleton for handling HTTP communication with the FDC system
+- **MCP Server Configuration**: 
+  - Uses standard input/output as the transport mechanism for MCP protocol communication
+  - Automatically discovers and registers tools from the assembly using the `WithToolsFromAssembly()` method
+  - Tools are marked with `[McpServerToolType]` for classes and `[McpServerTool]` for methods
+
+When a client connects to the MCP server, it can discover and invoke the available tools:
+- Simple echo tools for testing the connection
+- FDC-specific tools for retrieving tank delivery data
+
+The server handles the conversion between MCP protocol messages and C# method invocations, providing a standardized way for AI tools to interact with the FDC system.
+
+## Integration Example
+
+You can integrate this MCP server with AI tools or other systems that support the MCP protocol. Here's an example configuration for setting up the MCP server as a stdio service:
+```json
+ "Fdc C# MCP Server": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "/Users/yerald231ger/Documents/Areas/Courses-Mcp/csharp/src/McpServerFdc/McpServerFdc/McpServerFdc.csproj"
+      ]
+    }
+```
